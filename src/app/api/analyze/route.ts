@@ -136,7 +136,9 @@ export async function POST(req: Request) {
   return new Promise<NextResponse>((resolve) => {
     try {
       console.log(`Attempting analysis via yt-dlp: ${url}`);
-      const ytDlpPath = path.join(process.cwd(), "yt-dlp");
+      const isWin = process.platform === "win32";
+      const ytDlpExecutable = isWin ? "yt-dlp.exe" : "yt-dlp";
+      const ytDlpPath = path.join(process.cwd(), ytDlpExecutable);
       const ffmpegStatic = require("ffmpeg-static");
       const ffprobeStatic = require("ffprobe-static");
       
@@ -154,8 +156,7 @@ export async function POST(req: Request) {
       const ffprobeDir = path.dirname(ffprobePathStr);
       const env = { ...process.env, PATH: `${ffmpegDir}${path.delimiter}${ffprobeDir}${path.delimiter}${process.env.PATH}` };
 
-      const child = spawn("python", [
-        ytDlpPath,
+      const child = spawn(ytDlpPath, [
         "--js-runtimes", "node",
         "-f", "bestaudio",
         "-j",
