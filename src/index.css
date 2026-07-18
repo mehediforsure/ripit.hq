@@ -6,9 +6,9 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* Material 3 Palette tokens */
-  --color-m3-primary: rgb(254, 127, 45); /* Bright Retro Orange */
-  --color-m3-primary-container: rgba(254, 127, 45, 0.15);
-  --color-m3-on-primary-container: rgb(254, 127, 45);
+  --color-m3-primary: rgb(247, 127, 0); /* Bright Retro Orange */
+  --color-m3-primary-container: rgba(247, 127, 0, 0.15);
+  --color-m3-on-primary-container: rgb(247, 127, 0);
   
   --color-m3-secondary: rgb(35, 61, 77); /* Vintage Deep Slate Blue */
   --color-m3-secondary-container: rgba(35, 61, 77, 0.4);
@@ -52,6 +52,6 @@ body {
 
 /* Text Selection colors */
 ::selection {
-  background-color: rgba(254, 127, 45, 0.25);
+  background-color: rgba(247, 127, 0, 0.25);
   color: #ffffff;
 }

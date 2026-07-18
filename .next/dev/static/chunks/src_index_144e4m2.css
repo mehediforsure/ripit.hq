@@ -1,0 +1,56 @@
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";
+/* [project]/src/index.css [app-client] (css) */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Material 3 Palette tokens */
+  --color-m3-primary: #f77f00; /* Bright Retro Orange */
+  --color-m3-primary-container: #f77f0026;
+  --color-m3-on-primary-container: #f77f00;
+  
+  --color-m3-secondary: #233d4d; /* Vintage Deep Slate Blue */
+  --color-m3-secondary-container: #233d4d66;
+  --color-m3-on-secondary-container: #eaecf0;
+
+  --color-m3-surface: #000; /* Pure Black Background */
+  --color-m3-surface-container: #233d4d; /* Solid Metal Slate Blue Plate */
+  --color-m3-surface-container-high: #325064; /* Elevated Plate Highlight */
+  
+  --color-m3-on-surface: #eaecf0; /* Retro High-Contrast Off-White */
+  --color-m3-on-surface-variant: #eaecf0bf;
+  
+  --color-m3-outline: #3f3f46; /* Sleek grey border outlines (zinc-700) */
+  --color-m3-outline-variant: #233d4d; /* Slate border outlines */
+}
+
+body {
+  background-color: var(--color-m3-surface);
+  color: var(--color-m3-on-surface);
+  font-family: var(--font-sans);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-m3-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-m3-secondary);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-m3-primary);
+}
+
+::selection {
+  color: #fff;
+  background-color: #f77f0040;
+}
+
+/*# sourceMappingURL=src_index_144e4m2.css.map*/

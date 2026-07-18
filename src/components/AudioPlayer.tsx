@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Play, Pause, Volume2, VolumeX, RotateCcw, SkipForward, SkipBack } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, SkipForward, SkipBack } from "lucide-react";
 
 interface AudioPlayerProps {
   url: string;
