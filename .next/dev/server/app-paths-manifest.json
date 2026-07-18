@@ -1,5 +1,0 @@
-{
-  "/api/analyze/route": "app/api/analyze/route.js",
-  "/api/download/route": "app/api/download/route.js",
-  "/page": "app/page.js"
-}
