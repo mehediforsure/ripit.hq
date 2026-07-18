@@ -1,0 +1,6 @@
+{
+  "name": "RipIt.HQ",
+  "description": "An advanced high-fidelity audio downloader and transcoder that analyzes web audio URLs and downloads them in pristine-quality FLAC or MP3 format.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
