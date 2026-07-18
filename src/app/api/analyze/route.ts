@@ -9,7 +9,12 @@ function analyzeDirectLink(url: string): Promise<NextResponse> {
   return new Promise((resolve) => {
     try {
       console.log(`Analyzing direct stream link via ffprobe: ${url}`);
-      const child = spawn("ffprobe", [
+      const ffprobeStatic = require("ffprobe-static");
+      let ffprobePath = ffprobeStatic.path || ffprobeStatic;
+      if (ffprobePath.startsWith('\\ROOT') || ffprobePath.startsWith('/ROOT')) {
+        ffprobePath = ffprobePath.replace(/^\\ROOT|^\/ROOT/, process.cwd());
+      }
+      const child = spawn(ffprobePath, [
         "-v", "error",
         "-show_format",
         "-show_streams",
@@ -132,13 +137,31 @@ export async function POST(req: Request) {
     try {
       console.log(`Attempting analysis via yt-dlp: ${url}`);
       const ytDlpPath = path.join(process.cwd(), "yt-dlp");
-      const child = spawn(ytDlpPath, [
+      const ffmpegStatic = require("ffmpeg-static");
+      const ffprobeStatic = require("ffprobe-static");
+      
+      let ffmpegPathStr = ffmpegStatic;
+      if (ffmpegPathStr.startsWith('\\ROOT') || ffmpegPathStr.startsWith('/ROOT')) {
+        ffmpegPathStr = ffmpegPathStr.replace(/^\\ROOT|^\/ROOT/, process.cwd());
+      }
+      
+      let ffprobePathStr = ffprobeStatic.path || ffprobeStatic;
+      if (ffprobePathStr.startsWith('\\ROOT') || ffprobePathStr.startsWith('/ROOT')) {
+        ffprobePathStr = ffprobePathStr.replace(/^\\ROOT|^\/ROOT/, process.cwd());
+      }
+      
+      const ffmpegDir = path.dirname(ffmpegPathStr);
+      const ffprobeDir = path.dirname(ffprobePathStr);
+      const env = { ...process.env, PATH: `${ffmpegDir}${path.delimiter}${ffprobeDir}${path.delimiter}${process.env.PATH}` };
+
+      const child = spawn("python", [
+        ytDlpPath,
         "--js-runtimes", "node",
         "-f", "bestaudio",
         "-j",
         "--no-warnings",
         url
-      ]);
+      ], { env });
 
       let stdout = "";
       let stderr = "";

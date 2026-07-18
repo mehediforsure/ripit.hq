@@ -44,8 +44,13 @@ function startFfmpegTranscode(
   ffmpegArgs.push("pipe:1");
 
   console.log(`Starting FFmpeg conversion: ffmpeg ${ffmpegArgs.join(" ")}`);
-
-  const ffmpegProcess = spawn("ffmpeg", ffmpegArgs);
+  
+  const ffmpegStatic = require("ffmpeg-static");
+  let ffmpegPath = ffmpegStatic;
+  if (ffmpegPath.startsWith('\\ROOT') || ffmpegPath.startsWith('/ROOT')) {
+    ffmpegPath = ffmpegPath.replace(/^\\ROOT|^\/ROOT/, process.cwd());
+  }
+  const ffmpegProcess = spawn(ffmpegPath, ffmpegArgs);
 
   let stderrOutput = "";
   ffmpegProcess.stderr.on("data", (chunk) => {
@@ -107,13 +112,32 @@ export async function GET(req: Request) {
     try {
       console.log(`Resolving streaming source URL via yt-dlp: ${url}`);
       const ytDlpPath = path.join(process.cwd(), "yt-dlp");
-      const ytDlpProcess = spawn(ytDlpPath, [
+      
+      const ffmpegStatic = require("ffmpeg-static");
+      const ffprobeStatic = require("ffprobe-static");
+      
+      let ffmpegPathStr = ffmpegStatic;
+      if (ffmpegPathStr.startsWith('\\ROOT') || ffmpegPathStr.startsWith('/ROOT')) {
+        ffmpegPathStr = ffmpegPathStr.replace(/^\\ROOT|^\/ROOT/, process.cwd());
+      }
+      
+      let ffprobePathStr = ffprobeStatic.path || ffprobeStatic;
+      if (ffprobePathStr.startsWith('\\ROOT') || ffprobePathStr.startsWith('/ROOT')) {
+        ffprobePathStr = ffprobePathStr.replace(/^\\ROOT|^\/ROOT/, process.cwd());
+      }
+      
+      const ffmpegDir = path.dirname(ffmpegPathStr);
+      const ffprobeDir = path.dirname(ffprobePathStr);
+      const env = { ...process.env, PATH: `${ffmpegDir}${path.delimiter}${ffprobeDir}${path.delimiter}${process.env.PATH}` };
+
+      const ytDlpProcess = spawn("python", [
+        ytDlpPath,
         "--js-runtimes", "node",
         "-f", "bestaudio",
         "-g",
         "--no-warnings",
         url
-      ]);
+      ], { env });
 
       let resolvedUrl = "";
       let ytDlpError = "";
